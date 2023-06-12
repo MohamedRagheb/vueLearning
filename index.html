@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn Vue</title>
+    <style>
+        *{
+            z-index: 0;
+        }
+        .loadingPopup{
+            min-height: 100vh;
+            min-width: 100vw;
+            z-index: 8;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            justify-content: center;
+            text-align: center;
+            background-color: gray;
+        }
+        .form{
+            height: 25vh;
+            width: 300px;
+            padding:20px 80px 0 80px;
+            z-index: 1;
+            position: absolute;
+            top: 25%;
+            right: 45%;
+            background-color: cornsilk;
+        }
+
+    </style>
+</head>
+<body>
+    <div  id="root-div">
+    <div class="loadingPopup" v-show="loading">
+        loading
+    </div>
+<div class="res" v-show="names.length > 0">
+    <ul style="z-index: 0;">
+        <li v-for="name in names">
+            <frind-item
+            :frind = "name"  
+            :key= "name.name"  
+            ></frind-item>
+        </li>
+    </ul>
+    <center><button @click="forming = true">Add frind</button></center>
+</div>
+     <div class="form" v-show="forming">
+        <p>The new frind name is {{form.frindName}} and his age is {{form.frindage}}</p>
+         <input type="text" v-model="form.frindName" placeholder="name"><br><br>
+         <input type="number"  v-model="form.frindage" placeholder="age"><br><br>
+         <input type="button" value="Send" @click="addfrind()">
+         <input type="button" value="Colse PopUp" @click="forming = false"><br><br>
+     </div>
+        </div>
+
+    <script src="js/vue.js"></script> 
+    <script >
+        Vue.component("frind-item",{
+            props:["frind"],
+            template:"<span v-html='frind.name + frind.age'> </span>"
+        })
+        var vueModel = new Vue({
+            el:"#root-div",
+            data : {
+                name:"Mohamed ragheb",
+                loading:false,
+                forming:false,
+                form:{frindName:"",frindage:""},
+                names : [
+                    {name:"eyad" , age:"20"},
+                    {name:"Ahmed" , age:"16"},
+                    {name:"mohamed" , age:"14"},
+                    {name:"mohamed" , age:"14"},
+                ]
+            },
+            methods: {
+                    addfrind: function (){
+                        this.loading = true ;
+                        vueModel.names.push({name:this.form.frindName  ,age:this.form.frindage});
+                        this.form.frindName = ""
+                        this.form.frindage = ""
+                        setTimeout(()=>{
+                            this.loading = false ;
+                    },500)
+            }
+            }
+        })
+    </script> 
+</body>
+</html>
